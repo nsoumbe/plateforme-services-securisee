@@ -10,8 +10,11 @@ services:
       - ../.env
     depends_on:
       - db
+    ports:
+      - "8000:8000"
     networks:
       - internal
+    restart: unless-stopped
 
   frontend:
     build:
@@ -20,8 +23,11 @@ services:
     container_name: frontend
     depends_on:
       - backend
+    ports:
+      - "3000:3000"
     networks:
       - internal
+    restart: unless-stopped
 
   db:
     image: postgres:15
@@ -34,9 +40,13 @@ services:
       - "5432"
     networks:
       - internal
+    restart: unless-stopped
 
 networks:
   internal:
+    name: internal_network
     driver: bridge
 
+volumes:
+  db_data:
 
