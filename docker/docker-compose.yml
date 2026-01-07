@@ -1,0 +1,52 @@
+version: "3.9"
+
+services:
+  backend:
+    build:
+      context: ../backend
+      dockerfile: ../docker/backend.Dockerfile
+    container_name: backend
+    env_file:
+      - ../.env
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+    networks:
+      - internal
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: ../docker/frontend.Dockerfile
+    container_name: frontend
+    depends_on:
+      - backend
+    ports:
+      - "3000:3000"
+    networks:
+      - internal
+    restart: unless-stopped
+
+  db:
+    image: postgres:15
+    container_name: db
+    env_file:
+      - ../.env
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    expose:
+      - "5432"
+    networks:
+      - internal
+    restart: unless-stopped
+
+networks:
+  internal:
+    name: internal_network
+    driver: bridge
+
+volumes:
+  db_data:
+
