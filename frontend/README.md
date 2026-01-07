@@ -1,70 +1,54 @@
-# Getting Started with Create React App
+🛡️ Plateforme Frontend - Économie du Partage (Sécurisée)
+Ce dossier contient la partie Frontend de notre plateforme de services entre particuliers, développée avec React. L'objectif principal est l'application des principes du SDLC sécurisé.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+🚀 Installation et Lancement
+cd frontend
 
-In the project directory, you can run:
+npm install
 
-### `npm start`
+npm start (L'application tourne sur http://localhost:3000)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+🔐 Architecture de Sécurité (Lionel)
+Pour répondre aux exigences du projet, les contrôles suivants ont été mis en œuvre:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+1. Contrôle d'accès (RBAC)
 
-### `npm test`
+Système multi-rôle : Gestion des rôles Client, Fournisseur et Administrateur.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Protected Routes : Utilisation de composants React pour interdire l'accès aux pages sensibles selon le rôle de l'utilisateur.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+Page 403 : Une page Unauthorized.js redirige les tentatives d'élévation de privilèges (Menace STRIDE : Elevation of Privilege).
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+2. Gestion de l'Authentification (JWT)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Context API : Utilisation de AuthContext.js pour centraliser l'état de l'utilisateur et sécuriser la session.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-## Learn More
+Persistance sécurisée : Décodage et validation des jetons JWT avec jwt-decode.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+3. Protection contre les Injections
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Validation d'entrée : Les formulaires de Connexion et d'Inscription vérifient les formats de données côté client avant l'envoi au backend.
 
-### Code Splitting
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-### Analyzing the Bundle Size
+Échappement des sorties : Utilisation des mécanismes natifs de React pour prévenir les attaques XSS.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+4. Communication Backend
 
-### Making a Progressive Web App
+Intercepteurs Axios : Configuration automatique du header Authorization: Bearer <token> pour toutes les requêtes API vers le serveur Django.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+📁 Structure des dossiers
+/src/context/ : Coffre-fort de la session utilisateur.
 
-### Advanced Configuration
+/src/components/ : Composants réutilisables (Navbar dynamique, Routes protégées).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+/src/pages/ : Vues métiers (Services, Login, Admin Dashboard).
 
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+/src/api/ : Configuration de la communication sécurisée.
