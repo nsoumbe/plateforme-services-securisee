@@ -8,7 +8,23 @@ class User(AbstractUser):
         ('client', 'Client'),
         ('provider', 'Fournisseur'),
     )
-    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='client')
+    
+    # On rend l'email unique et obligatoire pour la connexion
+    email = models.EmailField(unique=True)
+    
+    # Ton champ de rôle avec les choix prédéfinis
+    role = models.CharField(
+        max_length=10, 
+        choices=ROLE_CHOICES, 
+        default='client'
+    )
+
+    # CONFIGURATION CRUCIALE POUR LIONEL :
+    # On indique à Django que l'identifiant de connexion est l'email
+    USERNAME_FIELD = 'email' 
+    
+    # Le champ 'username' reste requis par Django mais n'est plus l'identifiant
+    REQUIRED_FIELDS = ['username']
 
     def __str__(self):
-        return f"{self.username} - {self.role}"
+        return f"{self.email} ({self.role})"
